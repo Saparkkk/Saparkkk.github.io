@@ -4,6 +4,6 @@ I[banner](https;//picsum.photos/800/250)
 
 for OOP
 
-I[download_banner](./banner.jpg)
+I[download banner](./banner.jpg)
 
 Saparkkk
