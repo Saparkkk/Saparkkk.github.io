@@ -1,4 +1,4 @@
-![banner](https;//picsum.photos/800/250)
+![banner.jpg](https;//picsum.photos/)
 
 #my note
 
