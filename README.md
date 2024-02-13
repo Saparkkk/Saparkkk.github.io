@@ -4,7 +4,7 @@
 
 for OOP
 
-![download banner](./banner.jpg)
+![download.jpg](./banner.jpg)
 
 Saparkkk
 
