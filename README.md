@@ -14,8 +14,8 @@ git status
 git commit
 ```
 ## code python basic
-```
+```python
 d = {Anna':3.99,'Betty':3.78}
-for k, v in  d.items():
+for k, v in d.items():
   print(k,v) 
 ```
