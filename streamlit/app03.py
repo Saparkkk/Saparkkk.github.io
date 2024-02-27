@@ -1,52 +1,46 @@
 import streamlit as st
 import pandas as pd
 
-# กำหนดขนาดตารางข้อมูล
-st.set_page_config(
-    layout="wide",  # กำหนดเป็น wide เพื่อให้ตารางข้อมูลขยายตัวเต็มหน้าจอ
-    initial_sidebar_state="expanded"  # กำหนดให้ sidebar เปิดอยู่เสมอ
-)
-
-# สร้างข้อมูลตัวอย่าง
-data = {
-    'หัวข้อ': ['เรื่องน่าสนใจ', 'ความรู้สึก', 'คะแนน'],
-    'รีวิว': ['เรื่องนี้น่าสนใจมาก แนวซอมบี้ที่ไม่ซ้ำใคร', 'รู้สึกตื่นเต้นและรอคอยตอนต่อไป', 9.5],
-    'Movie': ['The Shawshank Redemption', 'The Godfather', 'The Dark Knight'],
-    'Category': ['Drama', 'Crime', 'Action'],
-    'Poster' : ['https://markpeak.net/wp-content/uploads/2022/03/shawshank-700x394.jpg', 
-                'https://img.monomax.me/-XnASaiSaflF2FV3NDZwMvnRo4k=/monomax-obj.obs.ap-southeast-2.myhuaweicloud.com/assets/fileupload/picture/the-godfather-508d945641aed.jpg', 
-                'https://static.tvtropes.org/pmwiki/pub/images/rsz_tdkrposter29_2001.jpg']
-    
+# สร้างข้อมูลเริ่มต้น
+movies_data = {
+    'Title': ['The Shawshank Redemption', 'The Godfather', 'The Dark Knight'],
+    'Director': ['Frank Darabont', 'Francis Ford Coppola', 'Christopher Nolan'],
+    'Year': [1994, 1972, 2008],
+    'Rating': [9.3, 9.2, 9.0]
 }
 
-# แปลงข้อมูลเป็น DataFrame
-df = pd.DataFrame(data)
+# สร้าง DataFrame จากข้อมูลเริ่มต้น
+movies = pd.DataFrame(movies_data)
 
-# สร้างเว็บแอป
-st.title('เว็บรีวิวหนัง')
-st.write('แสดงรีวิวหนัง')
+# สร้างหน้าเว็บ
+st.title('Movie Review Community')
+st.write('Welcome to our movie review community!')
+st.write('Here are the top movies:')
+st.write(movies)
 
-movie_title = st.text_input('ชื่อหนัง')
-movie_review = st.text_area('รีวิว')
-movie_rating = st.slider('คะแนน', min_value=0.0, max_value=10.0, step=0.5)
+# เก็บข้อมูลใน Session State
+if 'movies_list' not in st.session_state:
+    st.session_state.movies_list = movies_data
 
-# สร้าง DataFrame ของรีวิว
-review_data = {
-    'หัวข้อ': ['ชื่อหนัง', 'รีวิว', 'คะแนน'],
-    'ข้อมูล': [movie_title, movie_review, movie_rating]
-}
+# เพิ่มรีวิวใหม่
+st.subheader('Add a New Review')
+title = st.text_input('Movie Title')
+director = st.text_input('Director')
+year = st.number_input('Year', min_value=1900, max_value=2025)
+rating = st.slider('Rating', min_value=0.0, max_value=10.0, step=0.1)
+submit = st.button('Submit Review')
 
-review_df = pd.DataFrame(review_data)
-
-# แสดงรีวิวที่ผู้ใช้กรอก
-st.write(review_df)
-
-# แสดงข้อมูลในตาราง
-st.write(df)
-
-# สร้าง dropdown สำหรับเลือกหมวดหนัง
-category = st.selectbox('Select a category', df['Category'].unique())
-
-for index, row in df[df['Category'] == category].iterrows():
-    st.image(row['Poster'], caption=row['Movie'], use_column_width=True)
-    st.caption(f"Movie: {row['Movie']} - Category: {row['Category']}")
+if submit:
+    new_review = {
+        'Title': title,
+        'Director': director,
+        'Year': year,
+        'Rating': rating
+    }
+    # เพิ่มข้อมูลใหม่เข้ารายการข้อมูลใน Session State
+    st.session_state.movies_list['Title'].append(new_review['Title'])
+    st.session_state.movies_list['Director'].append(new_review['Director'])
+    st.session_state.movies_list['Year'].append(new_review['Year'])
+    st.session_state.movies_list['Rating'].append(new_review['Rating'])
+    st.write('New review added successfully!')
+    st.write(pd.DataFrame(st.session_state.movies_list))
