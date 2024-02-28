@@ -1,25 +1,58 @@
 import streamlit as st
-import random
 
-# รายการคำที่ใช้ในเกม
-words = ["apple", "banana", "cherry", "date", "elderberry"]
+# สร้างเว็บแอป
+st.title('คำนวณแคลอรี')
 
-# สุ่มคำจากรายการคำ
-word = random.choice(words)
+# สร้างเมนูในแถบข้าง
+menu_option = st.sidebar.radio('เลือกเมนู', ['คำนวณแคลอรี่', 'คำนวณแคลอรี่ของอาหาร'])
 
-# สร้างเว็บแอปพลิเคชัน
-st.title("เกมทายคำ")
-st.write("คำที่ต้องการให้เดามีจำนวนตัวอักษร " + str(len(word)))
+# สร้างเว็บแอป ของ คำนวณแคลอรี่
+if menu_option == 'คำนวณแคลอรี่':
+    # สร้างช่องให้ผู้ใช้ป้อนข้อมูล
+    weight = st.number_input('น้ำหนัก (กิโลกรัม)', min_value=0.0)
+    height = st.number_input('ส่วนสูง (เซนติเมตร)', min_value=0.0)
+    age = st.number_input('อายุ (ปี)', min_value=0)
 
-# สร้างช่องใส่คำ
-guess = st.text_input("กรุณาใส่คำที่คุณเดา")
+    # รับข้อมูลเพศ
+    gender = st.radio('เพศ', ('ชาย', 'หญิง'))
 
-# เช็คว่าคำที่เดาถูกต้องหรือไม่
-if guess.lower() == word.lower():
-    st.write(f"ยินดีด้วย! คำที่คุณเดาถูกต้อง คำที่เราคิดคือ '{word}'")
-else:
-    st.write("คำที่คุณเดาไม่ถูกต้อง โปรดลองอีกครั้ง")
+    # รับข้อมูลกิจกรรมที่ทำในแต่ละวัน
+    activity_level = st.selectbox('กิจกรรมที่ทำในแต่ละวัน', ['น้อยมาก', 'น้อย', 'ปานกลาง', 'มาก', 'มากมาก'])
 
+    # คำนวณแคลอรีที่ต้องการต่อวัน
+    if gender == 'ชาย':
+        bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age)
+    else:
+        bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age)
+
+    if activity_level == 'น้อยมาก':
+        cal_needed = bmr * 1.2
+    elif activity_level == 'น้อย':
+        cal_needed = bmr * 1.375
+    elif activity_level == 'ปานกลาง':
+        cal_needed = bmr * 1.55
+    elif activity_level == 'มาก':
+        cal_needed = bmr * 1.725
+    else:
+        cal_needed = bmr * 1.9
+
+    # แสดงผลลัพธ์
+    st.write(f'คุณต้องการแคลอรีต่อวัน:  {cal_needed:.2f} ')
+
+# สร้างเว็บแอป ของ คำนวณแคลอรี่ของอาหาร
+elif menu_option == 'คำนวณแคลอรี่ของอาหาร':
+    # สร้างช่องให้ผู้ใช้ป้อนข้อมูล
+    carbs = st.number_input('คาร์โบไฮเดรต (กรัม)', min_value=0.0)
+    fat = st.number_input('ไขมัน (กรัม)', min_value=0.0)
+    protein = st.number_input('โปรตีน (กรัม)', min_value=0.0)
+
+    # คำนวณแคลอรี
+    calories = 4 * carbs + 9 * fat + 4 * protein
+
+    # แสดงผลลัพธ์
+    st.write(f'แคลอรีของอาหารคือ {calories:.2f}')
+    
+    
 def set_background(image_url):
     image_url_str = f'url("{image_url}")'
     css = f"""
@@ -34,4 +67,4 @@ def set_background(image_url):
 
 
 ##ใช้งานตรงนี้
-set_background("https://wallpapers.com/images/hd/anime-meme-background-w13zt6adj4t13chk.jpg")
+set_background("https://food-ubc.b-cdn.net/wp-content/uploads/2022/06/AdobeStock_306848967-scaled.jpeg")
