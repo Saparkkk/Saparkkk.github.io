@@ -7,6 +7,6 @@
 </head>
 <body>
   <h1>Hello! 👋 I'm Saparkkk</h1>
-  <p>This is my first GitHub Pages website.</p>
+  <p>saparkkk.github.io</p>
 </body>
 </html>
